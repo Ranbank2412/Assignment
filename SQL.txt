@@ -1,0 +1,85 @@
+Task=> 1
+
+1.    Get First_Name from employee table using alias name “Employee Name”.
+Ans.  SELECT Firstname AS 'Employee Name' FROM employee;
+
+2.    Get FIRST_NAME, Joining year, Joining Month and Joining Date from employee table.
+Ans.  SELECT Firstname,year(Joining_date) AS 'Joining Year',month(Joining_date) AS 'Joining Month',day(Joining_date) AS 'Joining date' FROM employee;
+
+3.    Get all employee details from the employee table order by First Name Ascending And Salary descending.
+Ans.  => First Name Ascending :- SELECT * FROM employee ORDER BY Firstname ASC;
+      => Salary Descending :- SELECT * FROM employee ORDER BY Salary DESC;
+
+4.    Get employee details from employee table whose first name contains ‘o’.
+Ans.  => SELECT  * FROM employee WHERE Firstname LIKE '%o%';
+      => SELECT * FROM employee WHERE Firstname LIKE 'o%' OR Firstname LIKE '%o%' OR Firstname LIKE '%o';
+
+5.    Get employee details from employee table whose joining month is “January”.
+Ans.  => SELECT * FROM employee WHERE Joining_date LIKE '%-01-%';
+      => SELECT * FROM employee WHERE month(Joining_date)=01;
+
+6.    Get department, total salary with respect to a department from employee table order By total salary descending.
+Ans.  SELECT Department,SUM(Salary) as 'Total Salary' FROM employee GROUP BY Department ORDER BY SUM(Salary) DESC;
+
+7.    Get department wise maximum salary from employee table order by salary Ascending.
+Ans.  => SELECT Department,MAX(Salary) as 'Max Salary' FROM employee GROUP BY Department ORDER BY MAX(Salary) ASC;
+      => SELECT Department,MAX(Salary) as 'Max Salary' FROM employee GROUP BY Department ORDER BY Salary ASC;
+
+8.    Select first_name, incentive amount from employee and incentives table for those employees who have incentives and incentive amount greater than 3000.
+Ans.  SELECT Firstname,Incentive_amount FROM employee JOIN incentive ON employee_id=Employee_ref_id WHERE Incentive_amount>3000
+
+9.    Select 2nd Highest salary from employee table.
+Ans.  => SELECT MAX(Salary) AS '2nd Highest Salary' FROM employee WHERE Salary NOT IN(SELECT MAX(Salary) FROM employee);
+      => SELECT MAX(Salary) AS '2nd Highest Salary' FROM employee WHERE Salary < (SELECT MAX(Salary) FROM employee);
+
+10.   Select first_name, incentive amount from employee and incentives table for all Employees who got incentives using left join.
+Ans.  => SELECT Firstname,Incentive_amount FROM employee LEFT JOIN incentive on employee_id=Employee_ref_id WHERE incentive.Incentive_amount>0
+
+11.   Create View OF Employee table in which store first name ,last name and salary only.
+Ans.  CREATE VIEW `Employee View` AS SELECT Firstname,Lastname,Salary FROM employee;
+
+12.   Create Procedure to find out department wise highest salary.
+Ans.  CREATE PROCEDURE MaxSalary() SELECT Department,MAX(Salary) AS MaxSalary FROM employee GROUP BY Department
+
+13.   Create After Insert trigger on Employee table which insert records in view table.
+Ans.  
+
+
+
+Task=> 2
+
+1.    All orders for more than $1000.
+Ans.  SELECT * FROM ordertbl WHERE AMT>1000;
+
+2.    Names and cities of all salespeople in London with commission above 0.10.
+Ans.  SELECT SNAME,CITY FROM salseperson WHERE CITY='LONDON' AND  COMM>0.10;
+
+3.    All salespeople either in Barcelona or in London.
+Ans.  SELECT * FROM salseperson WHERE CITY='LONDON' OR CITY='BARCELONA';
+
+4.    All salespeople with commission between 0.10 and 0.12. (Boundary values should be excluded).
+Ans.  SELECT SNAME,COMM FROM  salseperson WHERE COMM<0.12 AND COMM>0.10;
+
+5.    All customers with NULL values in city column.
+Ans.  SELECT * FROM salseperson WHERE CITY= null;
+
+6.    All orders taken on Oct 3Rd and Oct 4th 1994.
+Ans.  SELECT * FROM ordertbl WHERE ODE='1994-10-03' OR ODE='1994-10-04';
+
+7.    All customers serviced by peel or Motika.
+Ans.  =>SELECT customer.CNN,customer.CNAME,customer.CITY,customer.RATING,customer.SNO,salseperson.SNAME FROM customer JOIN salseperson ON customer.SNO=salseperson.SNO WHERE customer.SNO=1001 OR customer.SNO=1004;
+
+8.    All customers whose names begin with a letter from A to B
+Ans.  SELECT * FROM customer WHERE CNAME LIKE 'A%' OR CNAME LIKE 'B%';
+
+9.    All customers excluding those with rating <= 100 unless they are located in Rome.
+Ans.  =>SELECT * FROM customer WHERE RATING NOT IN(SELECT RATING FROM customer WHERE RATING<=100 OR CITY='ROME');
+      =>SELECT * FROM customer WHERE RATING NOT IN(SELECT RATING FROM customer WHERE RATING<=100) AND CITY NOT IN(SELECT CITY FROM customer WHERE CITY='ROME');
+
+10.   All orders except those with 0 or NULL value in amt field.
+Ans.  SELECT * FROM ordertbl WHERE AMT NOT IN(SELECT AMT FROM ordertbl WHERE AMT=0 OR AMT= Null);
+
+11.   Count the number of salespeople currently listing orders in the order table.
+Ans.  SELECT COUNT(DISTINCT SNO) AS 'Total SalsePerson' FROM ordertbl;
+
+
